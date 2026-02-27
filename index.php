@@ -1,24 +1,57 @@
 <?php
-ini_set('default_charset', 'UTF-8');  
+require_once __DIR__ . '/vendor/autoload.php';
 
-use App\Routers\Router;
+use App\Core\Event;
+use App\Core\Dispatcher;
 
-require_once("./vendor/autoload.php");
+use App\Modules\LoggerModule;
+use App\Modules\EmailModule;
+use App\Modules\AnalyticsModule;
 
-$user_id=0;
-$user_name=""; 
-$user_role="";
+// 1. Инициализация ядра
+$dispatcher = new Dispatcher();
 
-// Обновляем глобальные переменные - данными из сессии
-session_start();
-if (isset($_SESSION['user_id']))
-    $user_id = $_SESSION['user_id'];
-if (isset($_SESSION['user_name']))
-    $user_name = $_SESSION['user_name'];
-if (isset($_SESSION['user_role']))
-    $user_role = $_SESSION['user_role'];
+// 2. Загрузка конфигурации
+$config = require __DIR__ .'/Config/config.php';
 
-$router = new Router();
-$url = $_SERVER['REQUEST_URI'];
+// 3. Динамическая регистрация подписчиков на основе настроек
+foreach ($config as $eventName => $subscriberClasses) {
+    foreach ($subscriberClasses as $class) {
+        // Создаем экземпляр модуля
+        $subscriber = new $class();
+        
+        // Подписываем метод handle этого модуля на событие
+        $dispatcher->subscribe($eventName, [$subscriber, 'handle']);
+    }
+}
 
-echo $router->route($url);
+// Тестовые сценарии исполнения
+echo "=== СИСТЕМА ЗАПУЩЕНА ===\n";
+
+// --- Сценарий 1: Регистрация пользователя ---
+echo "\n--- Сценарий: Регистрация пользователя ---\n";
+$registerEvent = new Event('user.registered', [
+    'user_id' => 101,
+    'email' => 'ivan@example.com',
+    'name' => 'Ivan'
+]);
+$dispatcher->dispatch($registerEvent);
+
+// --- Сценарий 2: Оплата заказа ---
+echo "\n--- Сценарий: Оплата заказа ---\n";
+$payEvent = new Event('order.paid', [
+    'order_id' => 555,
+    'email' => 'ivan@example.com',
+    'amount' => 1500
+]);
+$dispatcher->dispatch($payEvent);
+
+// --- Сценарий 3: Ошибка системы ---
+echo "\n--- Сценарий: Ошибка системы ---\n";
+$errorEvent = new Event('system.error', [
+    'message' => 'Database connection failed',
+    'code' => 500
+]);
+$dispatcher->dispatch($errorEvent);
+
+echo "\n=== РАБОТА ЗАВЕРШЕНА ===\n";
