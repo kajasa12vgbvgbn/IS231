@@ -17,7 +17,7 @@ class BaseTemplate
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- 2. Подключаем ваши личные стили -->
-    <link rel="stylesheet" href="/pizza221/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     
     <!-- Иконки (опционально) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
@@ -33,10 +33,10 @@ class BaseTemplate
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/pizza221/">Главная</a>
+                        <a class="nav-link active" href="/">Главная</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/pizza221/about">О нас</a>
+                        <a class="nav-link" href="about">О нас</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Контакты</a>

@@ -23,7 +23,7 @@ h1 {
 
 /* Стиль для главного баннера */
 .hero-section {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/pizza221/assets/img/124.jpg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/assets/img/124.jpg');
     background-size: cover;
     background-position: center;
     color: white;

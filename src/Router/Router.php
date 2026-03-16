@@ -1,14 +1,13 @@
 <?php
 namespace App\Router;
 
-// Подключаем контроллеры относительно папки Router
-// __DIR__ = .../pizza221/Router
-// ../Controllers = .../pizza221/Controllers
 require_once __DIR__ . '/../Controllers/HomeController.php';
 require_once __DIR__ . '/../Controllers/AboutController.php';
+require_once __DIR__ . '/../Controllers/ProductController.php';
 
-use Controllers\HomeController;
-use Controllers\AboutController;
+use App\Controllers\HomeController;
+use App\Controllers\AboutController;
+use App\Controllers\ProductController;
 
 class Router
 {
@@ -18,7 +17,7 @@ class Router
         $pieces = explode("/", $path);
         
         // Получаем ресурс (например, 'about' или пустую строку для главной)
-        $resource = $pieces[2] ?? '';
+        $resource = $pieces[1] ?? '';
 
         switch ($resource) {
             case "about":
@@ -30,10 +29,14 @@ class Router
             case "":
                 $controller = new HomeController();
                 return $controller->get();
+
+            case "product":
+                $product = new ProductController();
+                $id = isset($pieces[2]) ? intval($pieces[2]) : 0;
+                return $product->get($id);
                 
             default:
-                $controller = new HomeController();
-                return $controller->get();
+                break;
         }
     }
 }
